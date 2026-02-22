@@ -1,9 +1,12 @@
 {
+  "type": "module",
   "name": "umap",
   "version": "1.0.0",
-  "description": "",
+  "description": "UMap is a real-time, location-based discovery platform designed to help people explore events and experiences happening around them. Instead of relying on fragmented social media posts or static map listings, UMap provides a live, spatial view of what is happening in a city at any given moment.",
   "main": "index.js",
   "scripts": {
+    "start": "node apps/server/src/index.js",
+    "dev": "node --watch apps/server/src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -12,12 +15,15 @@
   "dependencies": {
     "cors": "^2.8.6",
     "dotenv": "^17.3.1",
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "pg": "^8.18.0",
+    "socket.io": "^4.8.3"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
     "@types/node": "^25.2.3",
+    "nodemon": "^3.1.14",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.9.3"
   }
