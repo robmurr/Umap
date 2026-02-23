@@ -1,40 +1,95 @@
-import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// Create axios instance with base URL
-const api = axios.create({
-  baseURL: 'http://localhost:4000',
-  timeout: 10000,
-});
+const BASE_URL = 'http://localhost:4000';
 
-// Request interceptor - attach JWT token
-api.interceptors.request.use(
-  async (config) => {
-    try {
-      const token = await AsyncStorage.getItem('userToken');
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-      }
-    } catch (error) {
-      console.error('Error retrieving token:', error);
+/**
+ * Make an API request with automatic JWT token injection
+ */
+async function request(endpoint, options = {}) {
+  try {
+    // Get token from storage
+    const token = await AsyncStorage.getItem('userToken');
+
+    // Set up headers
+    const headers = {
+      'Content-Type': 'application/json',
+      ...options.headers,
+    };
+
+    // Add token to Authorization header if available
+    if (token) {
+      headers.Authorization = `Bearer ${token}`;
     }
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
 
-// Response interceptor - handle errors
-api.interceptors.response.use(
-  (response) => response,
-  async (error) => {
-    if (error.response?.status === 401) {
-      // Token expired, clear storage and redirect to login
+    // Make the request
+    const response = await fetch(`${BASE_URL}${endpoint}`, {
+      ...options,
+      headers,
+    });
+
+    // Handle 401 Unauthorized
+    if (response.status === 401) {
       await AsyncStorage.removeItem('userToken');
+      throw new Error('Unauthorized - token expired');
     }
-    return Promise.reject(error);
-  }
-);
 
-export default api;
+    // Parse JSON response
+    const data = await response.json();
+
+    // Check if response is ok
+    if (!response.ok) {
+      throw new Error(data.error || `HTTP Error: ${response.status}`);
+    }
+
+    return data;
+  } catch (error) {
+    console.error('API Error:', error);
+    throw error;
+  }
+}
+
+/**
+ * GET request
+ */
+export async function get(endpoint) {
+  return request(endpoint, {
+    method: 'GET',
+  });
+}
+
+/**
+ * POST request
+ */
+export async function post(endpoint, body) {
+  return request(endpoint, {
+    method: 'POST',
+    body: JSON.stringify(body),
+  });
+}
+
+/**
+ * PUT request
+ */
+export async function put(endpoint, body) {
+  return request(endpoint, {
+    method: 'PUT',
+    body: JSON.stringify(body),
+  });
+}
+
+/**
+ * DELETE request
+ */
+export async function del(endpoint) {
+  return request(endpoint, {
+    method: 'DELETE',
+  });
+}
+
+export default {
+  get,
+  post,
+  put,
+  del,
+};
+

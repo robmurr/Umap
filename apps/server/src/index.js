@@ -17,7 +17,7 @@ async function startServer() {
     // Start the HTTP server
     app.listen(PORT, () => {
       console.log(`✓ Server is running on http://localhost:${PORT}`);
-      console.log(`✓ Health check: http://localhost:${PORT}/health`);
+      /*console.log(`✓ Health check: http://localhost:${PORT}/health`);*/
       console.log(`✓ Events endpoint: http://localhost:${PORT}/events`);
     });
   } catch (error) {
