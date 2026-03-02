@@ -38,7 +38,7 @@ The MVP intentionally excludes advanced personalization, gamification systems, a
 
 ### Mobile Application
 
-* React Native (TypeScript)
+* React Native (JavaScript)
 * Mapbox SDK
 * Axios for API communication
 * React Navigation
@@ -47,7 +47,7 @@ The MVP intentionally excludes advanced personalization, gamification systems, a
 
 * Node.js
 * Express
-* TypeScript
+* JavaScript
 * Socket.io for real-time updates
 
 ### Database
@@ -75,7 +75,7 @@ umap/
 │   └── server/        # Backend API and real-time services
 │
 ├── packages/
-│   └── shared/        # Shared TypeScript types
+│   └── shared/        # Shared JavaScript types
 │
 ├── .env.example
 ├── tsconfig.base.json
@@ -87,7 +87,7 @@ umap/
 * The mobile app communicates with the backend via REST APIs.
 * Real-time updates (attendance and reactions) are delivered via WebSockets.
 * The backend performs geospatial queries using PostGIS.
-* Shared TypeScript types ensure consistency between frontend and backend.
+* Shared JavaScript types ensure consistency between frontend and backend.
 
 ---
 
@@ -146,12 +146,6 @@ npm install
 ```
 cd apps/server
 npm run dev
-```
-
-The health check endpoint should be available at:
-
-```
-http://localhost:4000/health
 ```
 
 ---
