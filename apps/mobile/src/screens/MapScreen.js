@@ -9,7 +9,7 @@ import {
   FlatList,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { get } from '../services/api';
+import api from '../services/api';
 
 const INITIAL_LOCATION = {
   latitude: 40.7128,
@@ -29,11 +29,11 @@ export default function MapScreen({ navigation }) {
   const fetchNearbyEvents = async () => {
     try {
       setLoading(true);
-      const response = await get(
+      const { data } = await api(
         `/events?lat=${userLocation.latitude}&lng=${userLocation.longitude}&radius=5000`
       );
 
-      setEvents(response.events || []);
+      setEvents(data.events || []);
     } catch (error) {
       console.error('Error fetching events:', error);
       Alert.alert('Error', 'Failed to load events');
