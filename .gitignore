@@ -66,6 +66,12 @@ yarn-error.log
 # testing
 /coverage
 
+# Web build output
+dist/
+
+# Local Mapbox token (copy mapbox.config.example.ts → mapbox.config.ts and add your token)
+mapbox.config.ts
+
 # Yarn
 .yarn/*
 !.yarn/patches
